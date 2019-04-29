@@ -29,6 +29,34 @@ module.exports = {
       .from("task")
       .where("createdBy", userId);
   }
+
+  function getById(id) {
+    return db
+      .select("*")
+      .from("task")
+      .where({ id });
+  }
+  
+  function add(task) {
+    return db("task")
+        .returning("id")
+      .insert(task)
+      .into("task");
+  }
+  
+  function update(id, changes) {
+    return db("task")
+      .returning("id")
+      .where({ id })
+      .update(changes);
+  }
+  
+  function remove(id) {
+    return db("task")
+        .returning("id")
+      .where({ id })
+      .del();
+  } 
   
 
 // Export functions
