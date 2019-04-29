@@ -1,3 +1,4 @@
+
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('groupHistory', (table) => {
         table.increments('id');
@@ -11,9 +12,8 @@ exports.up = function(knex, Promise) {
         table.timestamp('updatedAt').defaultTo(knex.fn.now());
 
     });
-
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('groupHistory');
+    return knex.schema.dropTableIfExists('groupHistory');
 };

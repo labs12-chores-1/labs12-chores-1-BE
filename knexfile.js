@@ -23,8 +23,9 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/shoppinglist.sqlite3'
+      filename: './data/fairshare.sqlite3'
     },
+    useNullAsDefault: true,
     migrations: {
       tableName: 'knex_migrations',
       directory: './data/dev/migrations'
