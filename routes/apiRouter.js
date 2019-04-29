@@ -29,6 +29,9 @@ const notificationRouter = require('./notification/notificationRouter');
 
 const inviteRouter = require('./invite/inviteRouter');
 
+// imports task router for '/task' endpoint
+const taskRouter = require('./task/taskRouter');
+
 // this will import the routers from the other API paths and use them for their respective endpoints
 
 // e.g. router.use('/user', userRouter)
@@ -58,5 +61,7 @@ apiRouter.use('/category', categoryRouter);
 apiRouter.use('/notification', notificationRouter);
 
 apiRouter.use('/invite', inviteRouter);
+
+apiRouter.use('/task',taskRouter);
 
 module.exports = apiRouter;
