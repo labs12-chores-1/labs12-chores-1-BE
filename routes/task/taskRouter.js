@@ -4,7 +4,7 @@ const taskDb = require('../../helpers/taskModel');
 const notificationDb = require('../../helpers/notificationsModel');
 const groupDb = require('../../helpers/groupModel');
 const userDb = require('../../helpers/userModel');
-const taskRouter = express.Router();
+
 
 const checkJwt = require('../../validators/checkJwt');
 const checkUser = require('../../validators/checkUser');
@@ -103,4 +103,58 @@ taskRouter.post('/', (req, res) => {
         return res.status(500).json(err);
         })
 })  
+/**************************************************/
+
+/** GET ITEM BY GROUP ID
+ * @TODO Add middleware to ensure user is logged in
+ * **/
+
+/**************************************************/
+taskRouter.get('/:id', (req, res) => {
+    const id = req.params.id;
+
+    taskDb.getById(id).then(task => {
+        if (item.length >= 1) {
+            return res.status(200).json({data: task})
+        }
+
+        return res.status(404).json({message: "The requested item does not exist."});
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Retrieving Item`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        })
+})
+/**************************************************/
+
+// GET ALL ITEMS
+/** @TODO This should be set to sysadmin privileges for subscription privacy **/
+
+/**************************************************/
+
+taskRouter.get('/', (req, res) => {
+    taskDb.get().then(task => {
+        if(items.length >= 1) {
+            return res.status(200).json({data: task});
+        }
+
+        return res.status(404).json({message: `The requested items do not exist.`})
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Getting Items`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        })
+})
+
+
 module.exports = taskRouter;
