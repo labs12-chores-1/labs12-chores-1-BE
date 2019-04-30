@@ -5,7 +5,6 @@ const notificationDb = require('../../helpers/notificationsModel');
 const groupDb = require('../../helpers/groupModel');
 const userDb = require('../../helpers/userModel');
 
-
 const checkJwt = require('../../validators/checkJwt');
 const checkUser = require('../../validators/checkUser');
 
