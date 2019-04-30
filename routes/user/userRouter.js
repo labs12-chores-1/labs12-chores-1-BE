@@ -37,7 +37,7 @@ userRouter.use(checkJwt);
 userRouter.post('/', (req, res) => {
     let user = req.body;
     userDb.add(user).then(id => {
-        return res.status(200).json({message: `User adder to database with ID ${id[0]}`, id: id[0]});
+        return res.status(200).json({message: `User added to database with ID ${id[0]}`, id: id[0]});
     })
     .catch(err => {
         const error = {
@@ -232,13 +232,12 @@ userRouter.get('/check/getid', (req, res) => {
                     console.log(`Email sent: ${info.response}`);
                 }
             });
-
             return userDb.add(newUser).then(id => {
                 return userDb.getById(id).then(profile => {
                     return res.status(201).json({message: `New user added with ID ${id}.`, profile: profile[0], id:id[0]})
                 }).catch(err => {
                     console.log(err);
-                    return res.status(404).json({error: `Error addind user/no user found.`})
+                    return res.status(404).json({error: `Error adding user/no user found.`})
                 })
             }).catch(err => {
                 console.log(err);
