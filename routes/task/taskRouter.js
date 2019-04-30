@@ -260,8 +260,79 @@ taskRouter.put('/:id', (req, res) => {
             return res.status(500).json(error);
         })
 })
+/**************************************************/
 
+/** DELETE ITEM
+ * @TODO Add middleware to prevent unauthorized deletions
+ * **/
 
+/**************************************************/
+taskRouter.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    taskDb.getById(id).then(task => {
+        let groupID = task[0].groupID;
+        let oldtask = task[0];
+        taskDb.remove(id).then(status => {
+            console.log('remove status', status)
+            if (status.length >= 1 || status === 1) {
+                let notification = {};
+                    userDb.getProfileByEmail(req.user.email).then(user => {
+                        notification.userID = user[0].id;
+                        notification.userName = user[0].name;
+        
+                            groupDb.getById(groupID).then(group => {
+                                notification.groupID = group[0].id;
+                                notification.groupName = group[0].name;
+                                notification.action = 'delete-item';
+                                notification.content = `${notification.userName} removed ${oldtask.name} from the ${notification.groupName} shopping list.`
+        
+                                pusher.trigger(`group-${groupID}`, 'delete-item', {
+                                    "message": `${notification.userName} removed ${oldtask.name} from the ${notification.groupName} shopping list.`,
+                                    "timestamp": moment().format()
+                                })
+
+                                beamsClient.publishToInterests([`group-${groupID}`], {
+                                    apns: {
+                                        aps: {
+                                            alert: notification.content
+                                        }
+                                    },
+                                    fcm: {
+                                        notification: {
+                                            title: `Item Deleted`,
+                                            body: notification.content
+                                        }
+                                    }
+                                }).then((publishResponse) => {
+                                    console.log('item notification', publishResponse.publishId);
+                                }).catch((error) => {
+                                    console.log('error', error);
+                                })
+        
+                                console.log('NOTIFICATION\n\n', notification);
+        
+                                notificationDb.add(notification).then(response => {
+                                    console.log('notification added', response);
+                                    return res.status(200).json({message: "Item removed successfully", id: status[0]})                               
+                                })
+                            })
+                        })
+            } else {
+                return res.status(404).json({message: "The requested item does not exist."});
+            }
+
+        })
+    })
+            .catch(err => {
+                const error = {
+                    message: `Internal Server Error - Removing Item`,
+                    data: {
+                        err: err
+                    },
+                }
+                return res.status(500).json(error);
+            })
+})
 
 
 module.exports = taskRouter;
