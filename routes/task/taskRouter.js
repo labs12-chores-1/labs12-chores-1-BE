@@ -114,7 +114,7 @@ taskRouter.get('/:id', (req, res) => {
     const id = req.params.id;
 
     taskDb.getById(id).then(task => {
-        if (item.length >= 1) {
+        if (task.length >= 1) {
             return res.status(200).json({data: task})
         }
 
@@ -139,7 +139,7 @@ taskRouter.get('/:id', (req, res) => {
 
 taskRouter.get('/', (req, res) => {
     taskDb.get().then(task => {
-        if(items.length >= 1) {
+        if(task.length >= 1) {
             return res.status(200).json({data: task});
         }
 
