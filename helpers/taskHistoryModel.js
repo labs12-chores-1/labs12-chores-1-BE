@@ -44,3 +44,13 @@ function getByUser(id) {
       .from("taskHistory")
       .where("userID", id);
   }
+
+  /**
+ * Return all the task histories owned by the given user ID and group ID
+ * @param userID - The ID of the user
+ * @param groupID - The ID of the group
+ * @returns {*} - Returns every information owned by given history
+ */
+function getById(groupID, userID) {
+    return db.select("*").from("taskHistory").where({groupID}).where({userID});
+  }
