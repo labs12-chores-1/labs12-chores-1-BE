@@ -11,3 +11,36 @@ module.exports = {
     update,
     remove
   }
+
+  /**
+ * Returns all the task history in the database
+ * @returns {*}
+ */
+function get() {
+    return db("taskHistory");
+  }
+  
+  /**
+ * Returns all the task history of the given group ID
+ * @param id - The ID of the group
+ * @returns {*} - Returns all information about the task history from the given ID
+ */
+
+function getByGroup(id) {
+    return db
+      .select("*")
+      .from("taskHistory")
+      .where("groupID", id);
+  }
+
+  /**
+ * Return all task history owned by the given user ID
+ * @param id - The ID of the user
+ * @returns {*} - Returns every information owned by given user ID
+ */
+function getByUser(id) {
+    return db
+      .select("*")
+      .from("taskHistory")
+      .where("userID", id);
+  }
