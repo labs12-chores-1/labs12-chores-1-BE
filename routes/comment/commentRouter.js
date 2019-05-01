@@ -80,10 +80,10 @@ commentRouter.post('/', (req, res) => {
         //         notification.groupID = group[0].id;
         //         notification.groupName = group[0].name;
         //         notification.action = 'add-comment';
-        //         notification.content = `${notification.userName} added ${comment.name} to the ${notification.groupName} shopping list.`
+        //         notification.content = `${notification.userName} added ${comment.name} to the ${notification.groupName} task list.`
 
         //         pusher.trigger(`group-${groupID}`, 'add-comment', {
-        //             "message": `${notification.userName} added ${comment.name} to the ${notification.groupName} shopping list.`,
+        //             "message": `${notification.userName} added ${comment.name} to the ${notification.groupName} task list.`,
         //             "timestamp": moment().format()
         //         })
 
@@ -178,6 +178,63 @@ commentRouter.get('/group/:id', (req, res) => {
 
 /**************************************************/
 
+/** GET COMMENT BY USER ID
+ * @TODO Add middleware to ensure user is logged in
+ * **/
+
+/**************************************************/
+commentRouter.get('/user/:id', (req, res) => {
+    const id = req.params.id;
+
+    commentDb.getByUser(id).then(comment => {
+        if (comment.length >= 1) {
+            return res.status(200).json({data: comment})
+        }
+
+        return res.status(404).json({message: "The requested comment does not exist."});
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Retrieving Comment`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        })
+})
+
+/**************************************************/
+
+/** GET COMMENT BY TASK ID
+ * @TODO Add middleware to ensure user is logged in
+ * **/
+
+/**************************************************/
+commentRouter.get('/task/:id', (req, res) => {
+    const id = req.params.id;
+
+    commentDb.getByTask(id).then(comment => {
+        if (comment.length >= 1) {
+            return res.status(200).json({data: comment})
+        }
+
+        return res.status(404).json({message: "The requested comment does not exist."});
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Retrieving Comment`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        })
+})
+
+
+/**************************************************/
+
 // GET ALL COMMENTS
 /** @TODO This should be set to sysadmin privileges for subscription privacy **/
 
@@ -223,7 +280,7 @@ commentRouter.put('/:id', (req, res) => {
             if (status.length >= 1 || status === 1) {
                     let notification = {};
                     userDb.getProfileByEmail(req.user.email).then(user => {
-                        notification.commentedBy = user[0].id;
+                        notification.userID = user[0].id;
                         notification.userName = user[0].name;
         
                         commentDb.getById(id).then(newComment => {
@@ -233,10 +290,10 @@ commentRouter.put('/:id', (req, res) => {
                                 notification.groupID = group[0].id;
                                 notification.groupName = group[0].name;
                                 notification.action = 'update-comment';
-                                notification.content = `${notification.userName} updated ${oldComment.name} to ${newComment[0].name} in the ${notification.groupName} shopping list.`
+                                notification.content = `${notification.userName} updated ${oldComment.name} to ${newComment[0].name} in the ${notification.groupName} task list.`
         
                                 pusher.trigger(`group-${groupID}`, 'update-comment', {
-                                    "message": `${notification.userName} updated ${oldComment.name} to ${newComment[0].name} in the ${notification.groupName} shopping list.`,
+                                    "message": `${notification.userName} updated ${oldComment.name} to ${newComment[0].name} in the ${notification.groupName} task list.`,
                                     "timestamp": moment().format()
                                 })
 
@@ -297,50 +354,51 @@ commentRouter.delete('/:id', (req, res) => {
         let groupID = comment[0].groupID;
         let oldComment = comment[0];
         commentDb.remove(id).then(status => {
-            console.log('remove status', status)
+            // console.log('remove status', status)
             if (status.length >= 1 || status === 1) {
-                let notification = {};
-                    userDb.getProfileByEmail(req.user.email).then(user => {
-                        notification.commentedBy = user[0].id;
-                        notification.userName = user[0].name;
+                return res.status(200).json({message: "Comment removed successfully", id: status[0]});
+                // let notification = {};
+                //     userDb.getProfileByEmail(req.user.email).then(user => {
+                //         notification.commentedBy = user[0].id;
+                //         notification.userName = user[0].name;
         
-                            groupDb.getById(groupID).then(group => {
-                                notification.groupID = group[0].id;
-                                notification.groupName = group[0].name;
-                                notification.action = 'delete-comment';
-                                notification.content = `${notification.userName} removed ${oldComment.name} from the ${notification.groupName} shopping list.`
+                //             groupDb.getById(groupID).then(group => {
+                //                 notification.groupID = group[0].id;
+                //                 notification.groupName = group[0].name;
+                //                 notification.action = 'delete-comment';
+                //                 notification.content = `${notification.userName} removed ${oldComment.name} from the ${notification.groupName} task list.`
         
-                                pusher.trigger(`group-${groupID}`, 'delete-comment', {
-                                    "message": `${notification.userName} removed ${oldItem.name} from the ${notification.groupName} shopping list.`,
-                                    "timestamp": moment().format()
-                                })
+                //                 pusher.trigger(`group-${groupID}`, 'delete-comment', {
+                //                     "message": `${notification.userName} removed ${oldItem.name} from the ${notification.groupName} task list.`,
+                //                     "timestamp": moment().format()
+                //                 })
 
-                                beamsClient.publishToInterests([`group-${groupID}`], {
-                                    apns: {
-                                        aps: {
-                                            alert: notification.content
-                                        }
-                                    },
-                                    fcm: {
-                                        notification: {
-                                            title: `Comment Deleted`,
-                                            body: notification.content
-                                        }
-                                    }
-                                }).then((publishResponse) => {
-                                    console.log('comment notification', publishResponse.publishId);
-                                }).catch((error) => {
-                                    console.log('error', error);
-                                })
+                //                 beamsClient.publishToInterests([`group-${groupID}`], {
+                //                     apns: {
+                //                         aps: {
+                //                             alert: notification.content
+                //                         }
+                //                     },
+                //                     fcm: {
+                //                         notification: {
+                //                             title: `Comment Deleted`,
+                //                             body: notification.content
+                //                         }
+                //                     }
+                //                 }).then((publishResponse) => {
+                //                     console.log('comment notification', publishResponse.publishId);
+                //                 }).catch((error) => {
+                //                     console.log('error', error);
+                //                 })
         
-                                console.log('NOTIFICATION\n\n', notification);
+                //                 console.log('NOTIFICATION\n\n', notification);
         
-                                notificationDb.add(notification).then(response => {
-                                    console.log('notification added', response);
-                                    return res.status(200).json({message: "Comment removed successfully", id: status[0]})                               
-                                })
-                            })
-                        })
+                //                 notificationDb.add(notification).then(response => {
+                //                     console.log('notification added', response);
+                //                     return res.status(200).json({message: "Comment removed successfully", id: status[0]})                               
+                //                 })
+                //             })
+                //         })
             } else {
                 return res.status(404).json({message: "The requested comment does not exist."});
             }
