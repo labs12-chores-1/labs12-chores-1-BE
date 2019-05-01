@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "devDependencies": {},
+  "engine": {
+    "node":"v11.12.0",
+    "yarn":"1.15.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon index.js",
