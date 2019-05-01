@@ -1,6 +1,6 @@
 const express = require('express');
 const taskHistoryRouter = express.Router();
-const taskHistoryRouterDb = require('../../helpers/taskHistoryModel');
+const taskHistoryDb = require('../../helpers/taskHistoryModel');
 const taskDB = require('../../helpers/taskModel');
 
 const userDb = require('../../helpers/userModel');
@@ -26,8 +26,8 @@ taskHistoryRouter.use(checkJwt);
 taskHistoryRouter.post('/', (req, res) => {
     const taskHistory  = req.body;
     //console.log('history', taskHistory)
-    if(!taskHistory.taskID || typeof(taskHistory.taskID) !== 'number') return res.status(404).json({message: `taskID does not exist or is invalid.`});
-    if(!taskHistory.userID || typeof(taskHistory.userID) !== 'number') return res.status(404).json({message: `userID does not exist or is invalid.`});
+    if(!taskHistory.taskID ) return res.status(404).json({message: `taskID does not exist or is invalid.`});
+    if(!taskHistory.userID ) return res.status(404).json({message: `userID does not exist or is invalid.`});
     //console.log("COR");
     taskHistoryDb.add(taskHistory).then(id => {
         //console.log(id, 'id');
