@@ -63,12 +63,13 @@ commentRouter.post('/', (req, res) => {
     let commentedBy = comment.commentedBy;
 
     commentDb.add(comment).then(id => {
-        console.log(`Comment ID: ${id} is successfully added to the comment DB!`);
-        return res.status(200).json({message: `Comment added.`, id: id});
-    //Remove ShopTrak codes for notifications, for now
+        // console.log(`Comment ID: ${id} is successfully added to the comment DB!`);
+        return res.status(200).json({message: "Comment added.", id: id});
+    
+        //Remove ShopTrak codes for notifications, for now
     //************************************************************************
-        // // get group and user information for notification
-        // // we can assume the user in req.user is performing this action via checkJwt
+        // get group and user information for notification
+        // we can assume the user in req.user is performing this action via checkJwt
         // let notification = {};
         // // can we abstract this into a function?
         // userDb.getProfileByEmail(req.user.email).then(user => {

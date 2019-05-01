@@ -6,9 +6,9 @@ exports.up = function(knex, Promise) {
         //auto-increment primary key for table i.e. comment ID
         table.increments('id');
         table.string('commentString', 255).notNullable();
-        table.integer('taskID').notNullable();
+        table.integer('taskID').reference('id').inTable('task').onDelete("CASCADE").notNullable();
         table.integer('groupID').references('id').inTable('groups').onDelete("CASCADE").notNullable();
-        table.integer('commentedBy');
+        table.integer('commentedBy').reference('id').inTable('users').notNullable();
 
         // timestamps the moment of user creation (i.e. registration date)
         table.timestamp('commentedOn').defaultTo(knex.fn.now());
