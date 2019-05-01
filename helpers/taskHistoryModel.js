@@ -76,8 +76,20 @@ function add(groupMember) {
  */
 function update(id, changes) {
     //console.log("*testing*");
-    return db("groupHistory")
+    return db("taskHistory")
         .returning("id")
       .where({id})
       .update(changes);
+  }
+
+  /**
+ * Removes a group task history from the database
+ * @param id - The ID of the group task history to be removed
+ * @returns {*} - Returns the group ID
+ */
+function remove(id) {
+    return db("taskHistory")
+        .returning("id")
+      .where({id})
+      .del();
   }
