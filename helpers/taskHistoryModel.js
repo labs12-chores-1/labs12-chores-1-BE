@@ -35,10 +35,10 @@ function getByGroup(id) {
 
   /**
  * Return all task history owned by the given user ID
- * @param id - The ID of the user
+ * @param id - The ID of the user per task
  * @returns {*} - Returns every information owned by given user ID
  */
-function getByUser(id) {
+function getByUser(id) { 
     return db
       .select("*")
       .from("taskHistory")
@@ -55,20 +55,20 @@ function getById(groupID, userID) {
     return db.select("*").from("taskHistory").where({groupID}).where({userID});
   }
 
-/** WORK IN PROGRESS
+/** 
  * Adds a new task history to the database
  * @param groupMember - The new group task history to add
  * @returns {*} - Returns the group task history
  */
 
-function add(groupMember) {
+function add(task) {
     return db("taskHistory")
         .returning("id")
-      .insert(groupMember)
+      .insert(task)
       .into("taskHistory");
   }
 
-/** WORK IN PROGRESS
+/**
  * Update an existing group task history in the database
  * @param id - The ID of the group task history to update
  * @param changes - The actual changes of the group task history itself
