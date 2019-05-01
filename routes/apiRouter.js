@@ -68,6 +68,9 @@ apiRouter.use('/notification', notificationRouter);
 
 apiRouter.use('/invite', inviteRouter);
 
+//* TASK *//
 apiRouter.use('/task',taskRouter);
+
+apiRouter.use('/taskhistory', taskHistoryRouter);
 
 module.exports = apiRouter;
