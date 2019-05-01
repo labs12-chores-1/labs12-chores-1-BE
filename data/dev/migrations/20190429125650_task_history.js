@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
             .onDelete("CASCADE")
             .notNullable();
         table.integer('taskID').notNullable();
-        table.date('completedOn').notNullable();
+        table.date('completedOn');
 
 
         table.timestamp('createdAt').defaultTo(knex.fn.now());

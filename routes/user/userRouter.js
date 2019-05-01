@@ -222,8 +222,8 @@ userRouter.get('/check/getid', (req, res) => {
             let mailOptions = {
                 from: process.env.EMAIL_ADDRESS,
                 to: newUser.email,
-                subject: 'Welcome to ShopTrak!',
-                text: `Thank you for using ShopTrak. The Lambda Labs 10 Shopping List team hopes you enjoy it.`
+                subject: 'Welcome to FairShare!',
+                text: `Thank you for using FairShare. The Lambda Labs 12 Chores team hopes you enjoy it.`
             };
             transporter.sendMail(mailOptions, function(error, info){
                 if(error){
@@ -232,7 +232,6 @@ userRouter.get('/check/getid', (req, res) => {
                     console.log(`Email sent: ${info.response}`);
                 }
             });
-
             return userDb.add(newUser).then(id => {
                 return userDb.getById(id).then(profile => {
                     return res.status(201).json({message: `New user added with ID ${id}.`, profile: profile[0], id:id[0]})

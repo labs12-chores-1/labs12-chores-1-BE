@@ -9,6 +9,9 @@ const userRouter = require('./user/userRouter');
 // imports the router for '/group' endpoints
 const groupRouter = require('./group/groupRouter');
 
+// imports the router for '/comment' endpoints
+const commentRouter = require('./comment/commentRouter');
+
 // imports the router for '/subscription' endpoints
 const subscriptionRouter = require('./subscription/subscriptionRouter');
 
@@ -49,6 +52,8 @@ apiRouter.use('/user', userRouter);
 apiRouter.use('/group', groupRouter);
 
 apiRouter.use('/subscription', subscriptionRouter);
+
+apiRouter.use('/comment', commentRouter);
 
 apiRouter.use('/item', itemRouter);
 
