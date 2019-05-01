@@ -54,3 +54,30 @@ function getByUser(id) {
 function getById(groupID, userID) {
     return db.select("*").from("taskHistory").where({groupID}).where({userID});
   }
+
+/** WORK IN PROGRESS
+ * Adds a new task history to the database
+ * @param groupMember - The new group task history to add
+ * @returns {*} - Returns the group task history
+ */
+
+function add(groupMember) {
+    return db("taskHistory")
+        .returning("id")
+      .insert(groupMember)
+      .into("taskHistory");
+  }
+
+/** WORK IN PROGRESS
+ * Update an existing group task history in the database
+ * @param id - The ID of the group task history to update
+ * @param changes - The actual changes of the group task history itself
+ * @returns {*} - Returns ??
+ */
+function update(id, changes) {
+    //console.log("*testing*");
+    return db("groupHistory")
+        .returning("id")
+      .where({id})
+      .update(changes);
+  }
