@@ -222,3 +222,32 @@ taskHistoryRouter.get('/', (req, res) => {  //--------------- DOUBLE CHECK
 
 
 module.exports = taskHistoryRouter;
+
+/**************************************************/
+/**
+ * UPDATE TASK HISTORY
+ * @TODO Add middleware to ensure users can only change their own task information
+ */
+
+/**************************************************/
+
+taskHistoryRouter.put('/update/:id', (req, res) => {
+    const id = req.params.id;
+    const changes = req.body;
+    taskHistoryDb.update(id, changes).then(status => {
+        console.log(status);
+        if (status.length >= 1) {
+            return res.status(200).json({message: "Task History successfully updated.", id: Number(id)});
+        }
+        return res.status(400).json({message: "Failed to update."});
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Updating Task History`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        });
+});
