@@ -168,7 +168,7 @@ groupRouter.get('/user/:id', async (req, res) => {
 
         // get all group profiles via groupID
         for(let i = 0; i < joinedGroups.length; i++){
-            groupDb.getById(joinedGroups[i].groupID).then(groupProfiles => {
+           return groupDb.getById(joinedGroups[i].groupID).then(groupProfiles => {
                 // console.log('group profiles', groupProfiles);
 
                 for(let j = 0; j < groupProfiles.length; j++){
@@ -178,12 +178,12 @@ groupRouter.get('/user/:id', async (req, res) => {
                     }
                     
                     // get all members of each group via groupmembers
-                    groupMembersDb.getByGroup(groupProfiles[j].id).then(groupMembers => {    
+                    return groupMembersDb.getByGroup(groupProfiles[j].id).then(groupMembers => {    
                         // console.log('group members', groupMembers);
 
                         // get all user profiles via userdb
                         for(let k = 0; k < groupMembers.length; k++){
-                            usersDb.getById(groupMembers[k].userID).then(userProfile => {
+                            return usersDb.getById(groupMembers[k].userID).then(userProfile => {
                                 // console.log('userProfile', userProfile[0]);
                                 if(userProfile && userProfile[0] !== undefined){
                                     groupProfiles[j].members[k] = userProfile[0];
