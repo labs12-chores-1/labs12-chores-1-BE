@@ -194,5 +194,31 @@ taskHistoryRouter.get('/gettaskhistory/', (req, res) => {
         });
 });
 
+/**************************************************/
+
+// GET ALL TASK HISTORIES
+/** @TODO This should be set to sysadmin privileges for group privacy **/
+
+/**************************************************/
+
+taskHistoryRouter.get('/', (req, res) => {  //--------------- DOUBLE CHECK
+    taskHistoryDb.get().then(taskHistories => {
+        if(taskHistories){
+            return res.status(200).json({data: taskHistories});
+            return res.status(404).json({error: `No task histories exist.`});
+        }
+        return res.status(404).json({error: `No task histories exist.`});
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Getting All Task Histories`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        });
+});
+
 
 module.exports = taskHistoryRouter;
