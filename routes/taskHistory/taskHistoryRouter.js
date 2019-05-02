@@ -221,8 +221,6 @@ taskHistoryRouter.get('/', (req, res) => {  //--------------- DOUBLE CHECK
 });
 
 
-module.exports = taskHistoryRouter;
-
 /**************************************************/
 /**
  * UPDATE TASK HISTORY
@@ -251,3 +249,34 @@ taskHistoryRouter.put('/update/:id', (req, res) => {
             return res.status(500).json(error);
         });
 });
+
+/**************************************************/
+
+/** DELETE TASK HISTORY
+ * @TODO Add middleware to prevent unauthorized deletions
+ * **/
+
+/**************************************************/
+
+taskHistoryRouter.delete('/remove/:id', (req, res) => {
+    const id = req.params.id;
+    taskHistoryDb.remove(id).then(status => {
+        if (status.length >= 1) {
+            return res.status(200).json({message: "Task History successfully removed.", id: Number(id)})
+        }
+        return res.status(400).json({message: "Failed to delete."});
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Removing Task History`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        });
+});
+
+
+
+module.exports = taskHistoryRouter;
