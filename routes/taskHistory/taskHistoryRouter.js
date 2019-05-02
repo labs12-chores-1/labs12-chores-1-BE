@@ -140,6 +140,32 @@ taskHistoryRouter.get('/group/:id', async (req, res) => {
     })
 })
 
+/**************************************************/
+
+/** GET TASK HISTORY BY USER ID
+ * @TODO Add middleware to ensure user is logged in
+ * **/
+
+/**************************************************/
+taskHistoryRouter.get('/user/:id', (req, res) => { //----------------DOUBLE CHECK
+    const userId = req.params.id;
+    taskHistoryDb.getByUser(userId).then(taskHistories => {
+        if (taskHistories.length >= 1) {
+            return res.status(200).json({data: taskHistories});
+        }
+        return res.status(404).json({message: "The requested task histories do not exist."});
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Getting Task History`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        });
+});
+
 
 
 module.exports = taskHistoryRouter;
