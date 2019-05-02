@@ -1,7 +1,7 @@
 const express = require('express');
 const taskHistoryRouter = express.Router();
 const taskHistoryDb = require('../../helpers/taskHistoryModel');
-const taskDB = require('../../helpers/taskModel');
+const taskDb = require('../../helpers/taskModel');
 
 const userDb = require('../../helpers/userModel');
 const moment = require('moment');
@@ -86,11 +86,11 @@ taskHistoryRouter.get('/group/:id', async (req, res) => {
     let groupID = req.params.id;
 
     taskHistoryDb.getByGroup(groupID).then(hist => {
-        // iterate over each history and collect username and task
+        // iterate over each task history and collect username and task
 
         for(let i = 0; i < hist.length; i++){
             userDb.getById(hist[i].userID).then(user => {
-                // collect username of trip // ---------------------- DOUBLE CHECK LOGIC
+                // collect username of task 
                 if(!user || user.length === 0){
                     hist[i].userName = 'Removed User';
                 } else {
@@ -173,11 +173,11 @@ taskHistoryRouter.get('/user/:id', (req, res) => { //----------------DOUBLE CHEC
  * **/
 
 /**************************************************/
-taskHistoryRouter.get('/gettaskhistory/', (req, res) => {
+taskHistoryRouter.get('/gettaskhistory/', (req, res) => { //--------HAVE SOMEONE TEST : TYPEOF DELETED
     let taskHistory = req.body;
-    if(!taskHistory.groupID || typeof(taskHistory.groupID) !== 'number') return res.status(404).json({message: `groupID does not exist or is invalid.`});
-    if(!taskHistory.userID || typeof(taskHistory.userID) !== 'number') return res.status(404).json({message: `userID does not exist or is invalid.`});
-    groupHistoryDb.getById(taskHistory.groupID, taskHistory.userID).then(taskHistories => {
+    if(!taskHistory.groupID ) return res.status(404).json({message: `groupID does not exist or is invalid.`});
+    if(!taskHistory.userID ) return res.status(404).json({message: `userID does not exist or is invalid.`});
+    taskHistoryDb.getById(taskHistory.groupID, taskHistory.userID).then(taskHistories => {
         if (taskHistories.length >= 1) {
             return res.status(200).json({data: taskHistories});
         }
@@ -196,16 +196,15 @@ taskHistoryRouter.get('/gettaskhistory/', (req, res) => {
 
 /**************************************************/
 
-// GET ALL TASK HISTORIES
+// GET ALL TASK HISTORIES -------------- FOR ADMIN ---- --------------- DOUBLE CHECK
 /** @TODO This should be set to sysadmin privileges for group privacy **/
 
 /**************************************************/
 
-taskHistoryRouter.get('/', (req, res) => {  //--------------- DOUBLE CHECK
+taskHistoryRouter.get('/', (req, res) => {  
     taskHistoryDb.get().then(taskHistories => {
         if(taskHistories){
             return res.status(200).json({data: taskHistories});
-            return res.status(404).json({error: `No task histories exist.`});
         }
         return res.status(404).json({error: `No task histories exist.`});
     })
@@ -234,7 +233,7 @@ taskHistoryRouter.put('/update/:id', (req, res) => {
     const changes = req.body;
     taskHistoryDb.update(id, changes).then(status => {
         console.log(status);
-        if (status.length >= 1) {
+        if (status >= 1) {
             return res.status(200).json({message: "Task History successfully updated.", id: Number(id)});
         }
         return res.status(400).json({message: "Failed to update."});
@@ -261,7 +260,7 @@ taskHistoryRouter.put('/update/:id', (req, res) => {
 taskHistoryRouter.delete('/remove/:id', (req, res) => {
     const id = req.params.id;
     taskHistoryDb.remove(id).then(status => {
-        if (status.length >= 1) {
+        if (status >= 1) {
             return res.status(200).json({message: "Task History successfully removed.", id: Number(id)})
         }
         return res.status(400).json({message: "Failed to delete."});
@@ -288,7 +287,7 @@ taskHistoryRouter.delete('/remove/:id', (req, res) => {
 taskHistoryRouter.get('/user/:id', (req, res) => {
     const userId = req.params.id;
     taskHistoryDb.returnUserGroups(userId).then(status => {
-        if (status.length >= 1) {
+        if (status >= 1) {
             return res.status(200).json({message: "Task History's group ID's successfully acquired.", id: Number(id)});
         }
         return res.status(400).json({message: "Failed to get task history."});
@@ -304,7 +303,7 @@ taskHistoryRouter.get('/user/:id', (req, res) => {
         });
 });
 
-taskHistoryRouter.get('/total/group/:id', (req, res) => { //-----------------Double Check
+taskHistoryRouter.get('/all/group/:id', (req, res) => { //-----------------Double Check
     let groupID = req.params.id;
 
     taskHistoryDb.getByGroup(groupID).then(data => {
