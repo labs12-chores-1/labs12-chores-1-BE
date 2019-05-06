@@ -20,7 +20,7 @@ exports.up = function(knex, Promise) {
 
         // We need a way to secure this value from being changed by anyone but the systems administrator
         // assigns a foreign key integer to reference a subscription type as defined in the subscriptions table
-        // table.integer('subscriptionType').references('id').inTable('subscriptions').defaultTo(1);
+        table.integer('subscriptionType').references('id').inTable('subscriptions').defaultTo(1);
 
         // timestamps the moment of user creation (i.e. registration date)
         table.timestamp('createdAt').defaultTo(knex.fn.now());
