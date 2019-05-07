@@ -10,6 +10,7 @@ module.exports = {
   update,
   getIdByEmail,
   getProfileByEmail,
+  getSubByID
 }
 
 /**
@@ -55,6 +56,19 @@ function getIdByEmail(email){
   .from("users")
   .where({email});
 }
+
+/**
+ * Returns the user Subscription associated with the given userID
+ *  
+ */
+
+function getSubByID(id){
+  return db
+  .select("subscriptionType")
+  .from("users")
+  .where({id});
+}
+
 
 /**
  * Adds a new user to the database
