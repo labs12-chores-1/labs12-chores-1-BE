@@ -202,6 +202,7 @@ userRouter.delete('/:id', checkUser, (req, res) => {
 /**************************************************/
 userRouter.get('/check/getid', (req, res) => {
     let email = req.user.email;
+    debugger;
     userDb.getIdByEmail(email).then(id => {
         if(!id || id.length === 0){
             //create new user
@@ -244,7 +245,7 @@ userRouter.get('/check/getid', (req, res) => {
                 return res.status(404).json({error: `Error adding user/no user found.`})
             })
         } else {
-            userDb.getById(id[0].id).then(profile => {
+            return userDb.getById(id[0].id).then(profile => {
                 return res.status(200).json({profile: profile[0], id: id[0].id});
             }).catch(err => {
                 console.log(err);
@@ -255,6 +256,7 @@ userRouter.get('/check/getid', (req, res) => {
         console.log(err);
         return res.status(500).json({error: `Error retrieving user ID.`})
     })
+    
 })
 
 
