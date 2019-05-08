@@ -25,15 +25,9 @@ taskHistoryRouter.use(checkJwt);
  * **/
 taskHistoryRouter.post('/', (req, res) => {
     const taskHistory  = req.body;
-<<<<<<< HEAD
-    //console.log('history', taskHistory)
-    if(!taskHistory.taskID ) return res.status(404).json({message: `taskID does not exist or is invalid.`});
-    if(!taskHistory.userID  ) return res.status(404).json({message: `userID does not exist or is invalid.`});
-=======
     // return res.status(404).json({message: `task history type: ${typeof(taskHistory.taskID)}`});
     if(!taskHistory.taskID || typeof(taskHistory.taskID) !== 'number' ) return res.status(404).json({message: `taskID does not exist or is invalid.`});
     if(!taskHistory.userID || typeof(taskHistory.userID) !== 'number' ) return res.status(404).json({message: `userID does not exist or is invalid.`});
->>>>>>> 2495b576d6e6d5692f4b5f7ee3c09237ee1e84a1
     //console.log("COR");
     taskHistoryDb.add(taskHistory).then(id => {
         //console.log(id, 'id');
