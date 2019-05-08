@@ -7,8 +7,8 @@ exports.up = function(knex, Promise) {
         table.integer('completedBy');
         table.date('completedOn');
         table.integer('groupID').references('id').inTable('groups').onDelete("CASCADE").notNullable();
-        table.string(‘comments’);
-        
+        table.string('comments').references('taskID').inTable('comments');
+  
     })
   };
   

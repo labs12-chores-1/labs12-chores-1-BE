@@ -7,7 +7,6 @@ const groupMemDb = require('../../helpers/groupMembersModel');
 const usersDb = require('../../helpers/userModel');
 const nodemailer = require('nodemailer');
 
-
 const checkJwt = require('../../validators/checkJwt');
 // checkJwt middleware authenticates user tokens and ensures they are signed correctly in order to access our internal API
 const checkUser = require('../../validators/checkUser');
