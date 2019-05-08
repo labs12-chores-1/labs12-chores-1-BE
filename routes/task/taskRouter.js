@@ -262,7 +262,7 @@ taskRouter.put('/:id', (req, res) => {
 })
 /**************************************************/
 
-/** DELETE ITEM
+/** DELETE TASK
  * @TODO Add middleware to prevent unauthorized deletions
  * **/
 
