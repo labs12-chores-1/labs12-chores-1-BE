@@ -5,8 +5,8 @@ exports.seed = function(knex, Promise) {
     // .then(function () {
       // Inserts seed entries
       return knex('subscriptions').insert([
-        {name: 'Free', amount: 0.00},
-        {name: 'Premium', amount: 9}
+        {id: 1, name: 'Free', amount: 0.00},
+        {id: 2, name: 'Premium', amount: 9}
       ]);
     // });
 };
