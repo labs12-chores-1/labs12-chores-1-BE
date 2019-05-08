@@ -104,7 +104,7 @@ taskRouter.post('/', (req, res) => {
 })  
 /**************************************************/
 
-/** GET TASKS BY GROUP ID
+/** GET TASK BY GROUP ID
  * @TODO Add middleware to ensure user is logged in
  * **/
 
@@ -117,7 +117,7 @@ taskRouter.get('/group/:id', (req, res) => {
             return res.status(200).json({data: task})
         }
 
-        return res.status(404).json({message: "The requested tasks does not exist."});
+        return res.status(404).json({message: "The requested task does not exist."});
     })
         .catch(err => {
             const error = {
@@ -147,7 +147,7 @@ taskRouter.get('/:id', (req, res) => {
     })
         .catch(err => {
             const error = {
-                message: `Internal Server Error - Getting Task`,
+                message: `Internal Server Error - Getting Tasks`,
                 data: {
                     err: err
                 },
@@ -168,11 +168,11 @@ taskRouter.get('/', (req, res) => {
             return res.status(200).json({data: task});
         }
 
-        return res.status(404).json({message: `The requested items do not exist.`})
+        return res.status(404).json({message: `The requested tasks do not exist.`})
     })
         .catch(err => {
             const error = {
-                message: `Internal Server Error - Getting Items`,
+                message: `Internal Server Error - Getting Tasks`,
                 data: {
                     err: err
                 },
@@ -183,7 +183,7 @@ taskRouter.get('/', (req, res) => {
 
 /**************************************************/
 /**
- * UPDATE ITEM
+ * UPDATE TASK
  * @TODO Add middleware to ensure users can only change their own group information
  */
 
@@ -197,7 +197,7 @@ taskRouter.put('/:id', (req, res) => {
         let oldtask = task[0];// oldtask???
 
         taskDb.update(id, changes).then(status => {
-            console.log('item update', status);
+            console.log('task update', status);
 
             if (status.length >= 1 || status === 1) {
                     let notification = {};
@@ -211,10 +211,10 @@ taskRouter.put('/:id', (req, res) => {
                             groupDb.getById(groupID).then(group => {
                                 notification.groupID = group[0].id;
                                 notification.groupName = group[0].name;
-                                notification.action = 'update-item';
+                                notification.action = 'update-task';
                                 notification.content = `${notification.userName} updated ${oldtask.name} to ${newtask[0].name} in the ${notification.groupName} shopping list.`
         
-                                pusher.trigger(`group-${groupID}`, 'update-item', {
+                                pusher.trigger(`group-${groupID}`, 'update-task', {
                                     "message": `${notification.userName} updated ${oldtask.name} to ${newtask[0].name} in the ${notification.groupName} shopping list.`,
                                     "timestamp": moment().format()
                                 })
@@ -227,12 +227,12 @@ taskRouter.put('/:id', (req, res) => {
                                     },
                                     fcm: {
                                         notification: {
-                                            title: `Item Updated`,
+                                            title: `Task Updated`,
                                             body: notification.content
                                         }
                                     }
                                 }).then((publishResponse) => {
-                                    console.log('item notification', publishResponse.publishId);
+                                    console.log('task notification', publishResponse.publishId);
                                 }).catch((error) => {
                                     console.log('error', error);
                                 })
@@ -241,19 +241,19 @@ taskRouter.put('/:id', (req, res) => {
         
                                 notificationDb.add(notification).then(response => {
                                     console.log('notification added', response);
-                                    return res.status(200).json({message: "Item updated successfully", id: status[0]})                                    
+                                    return res.status(200).json({message: "Task updated successfully", id: status[0]})                                    
                                 })
                             })
                         })
                     })
                 } else {
-                    return res.status(404).json({message: "The requested item does not exist."});
+                    return res.status(404).json({message: "The requested task does not exist."});
                 }
         })
     })
         .catch(err => {
             const error = {
-                message: `Internal Server Error - Updating Item`,
+                message: `Internal Server Error - Updating Task`,
                 data: {
                     err: err
                 },
@@ -263,7 +263,7 @@ taskRouter.put('/:id', (req, res) => {
 })
 /**************************************************/
 
-/** DELETE ITEM
+/** DELETE TASK
  * @TODO Add middleware to prevent unauthorized deletions
  * **/
 
@@ -284,10 +284,10 @@ taskRouter.delete('/:id', (req, res) => {
                             groupDb.getById(groupID).then(group => {
                                 notification.groupID = group[0].id;
                                 notification.groupName = group[0].name;
-                                notification.action = 'delete-item';
+                                notification.action = 'delete-task';
                                 notification.content = `${notification.userName} removed ${oldtask.name} from the ${notification.groupName} shopping list.`
         
-                                pusher.trigger(`group-${groupID}`, 'delete-item', {
+                                pusher.trigger(`group-${groupID}`, 'delete-task', {
                                     "message": `${notification.userName} removed ${oldtask.name} from the ${notification.groupName} shopping list.`,
                                     "timestamp": moment().format()
                                 })
@@ -300,12 +300,12 @@ taskRouter.delete('/:id', (req, res) => {
                                     },
                                     fcm: {
                                         notification: {
-                                            title: `Item Deleted`,
+                                            title: `Task Deleted`,
                                             body: notification.content
                                         }
                                     }
                                 }).then((publishResponse) => {
-                                    console.log('item notification', publishResponse.publishId);
+                                    console.log('task notification', publishResponse.publishId);
                                 }).catch((error) => {
                                     console.log('error', error);
                                 })
@@ -314,19 +314,19 @@ taskRouter.delete('/:id', (req, res) => {
         
                                 notificationDb.add(notification).then(response => {
                                     console.log('notification added', response);
-                                    return res.status(200).json({message: "Item removed successfully", id: status[0]})                               
+                                    return res.status(200).json({message: "Task removed successfully", id: status[0]})                               
                                 })
                             })
                         })
             } else {
-                return res.status(404).json({message: "The requested item does not exist."});
+                return res.status(404).json({message: "The requested task does not exist."});
             }
 
         })
     })
             .catch(err => {
                 const error = {
-                    message: `Internal Server Error - Removing Item`,
+                    message: `Internal Server Error - Removing Task`,
                     data: {
                         err: err
                     },
