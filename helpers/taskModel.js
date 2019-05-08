@@ -34,7 +34,7 @@ module.exports = {
     return db
       .select("*")
       .from("task")
-      .where({ id });
+      .where({id});
   }
   
   function add(task) {

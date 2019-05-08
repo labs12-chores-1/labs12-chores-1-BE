@@ -104,24 +104,24 @@ taskRouter.post('/', (req, res) => {
 })  
 /**************************************************/
 
-/** GET ITEM BY GROUP ID
+/** GET TASKS BY GROUP ID
  * @TODO Add middleware to ensure user is logged in
  * **/
 
 /**************************************************/
-taskRouter.get('/:id', (req, res) => {
+taskRouter.get('/group/:id', (req, res) => {
     const id = req.params.id;
 
-    taskDb.getById(id).then(task => {
+    taskDb.getByGroup(id).then(task => {
         if (task.length >= 1) {
             return res.status(200).json({data: task})
         }
 
-        return res.status(404).json({message: "The requested item does not exist."});
+        return res.status(404).json({message: "The requested tasks does not exist."});
     })
         .catch(err => {
             const error = {
-                message: `Internal Server Error - Retrieving Item`,
+                message: `Internal Server Error - Retrieving Task`,
                 data: {
                     err: err
                 },
@@ -131,22 +131,23 @@ taskRouter.get('/:id', (req, res) => {
 })
 /**************************************************/
 
-// GET ALL ITEMS
+// GET Task by ID
 /** @TODO This should be set to sysadmin privileges for subscription privacy **/
 
 /**************************************************/
 
-taskRouter.get('/', (req, res) => {
-    taskDb.get().then(task => {
+taskRouter.get('/:id', (req, res) => {
+    const id = req.params.id;
+    taskDb.getById(id).then(task => {
         if(task.length >= 1) {
             return res.status(200).json({data: task});
         }
 
-        return res.status(404).json({message: `The requested items do not exist.`})
+        return res.status(404).json({message: `The requested tasks do not exist.`})
     })
         .catch(err => {
             const error = {
-                message: `Internal Server Error - Getting Items`,
+                message: `Internal Server Error - Getting Task`,
                 data: {
                     err: err
                 },
@@ -156,7 +157,7 @@ taskRouter.get('/', (req, res) => {
 })
 /**************************************************/
 
-// GET ALL ITEMS
+// GET ALL TASKS
 /** @TODO This should be set to sysadmin privileges for subscription privacy **/
 
 /**************************************************/

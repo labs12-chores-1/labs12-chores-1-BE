@@ -43,7 +43,7 @@ groupRouter.use(checkJwt);
  * **/
 groupRouter.post('/', checkSubscription, (req, res) => {
     let group = req.body;
-    const subType = usersDb.getSubByID(req.userID);//req.subscriptionType;
+    const subType = req.subscriptionType;
     console.log("GROUP => ", group);
     console.log("subType => ", subType);
 
