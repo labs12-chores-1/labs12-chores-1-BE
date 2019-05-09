@@ -10,6 +10,7 @@ const checkSubscription = (req, res, next) => {
         if (!id || id.length === 0) return res.status(403).json({warning: `You do not have permission to do that.`})
 
         req.subscriptionType = id[0].subscriptionType;
+        console.log('LOOK HERE:', req.subscriptionType);
         return next();
     }).catch(err => {
         console.log(err);
