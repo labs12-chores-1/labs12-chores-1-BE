@@ -147,11 +147,7 @@ taskRouter.get('/:id', (req, res) => {
     })
         .catch(err => {
             const error = {
-<<<<<<< HEAD
                 message: `Internal Server Error - Getting Task`,
-=======
-                message: `Internal Server Error - Getting Tasks`,
->>>>>>> master
                 data: {
                     err: err
                 },
