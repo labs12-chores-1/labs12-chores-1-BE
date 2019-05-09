@@ -86,7 +86,7 @@ userRouter.get('/:id', (req, res) => {
 userRouter.get('/:id/name', (req, res) => {
     const id = req.params.id;
 
-    userDb.getNameById(id).then(user => {
+    userDb.getNameByID(id).then(user => {
         if (user.length >= 1) {
             return res.status(200).json(user[0]);
         }
