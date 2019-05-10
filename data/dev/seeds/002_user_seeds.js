@@ -7,8 +7,9 @@ const createFakeUser = () => ({
 
 exports.seed = function(knex, promise) {
   let fakeUsers = [];
-  fakeUsers.push({name:"Tsai Huang", email:"tsaihuangsd@gmail.com"})
-  const desiredFakeUsers = 49;
+  fakeUsers.push({name:"Tsai Huang", email:"tsaihuangsd@gmail.com"});
+  fakeUsers.push({name:"Luke", email:"lskywalker@gmail.com"});
+  const desiredFakeUsers = 48;
   for (let i = 0; i < desiredFakeUsers; i++) {
     fakeUsers.push(createFakeUser());
   }

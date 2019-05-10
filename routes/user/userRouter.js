@@ -78,6 +78,33 @@ userRouter.get('/:id', (req, res) => {
     })
 })
 
+/** GET USER NAME BY ID
+ * @TODO Add middleware to ensure user is logged in
+ * **/
+
+/**************************************************/
+userRouter.get('/:id/name', (req, res) => {
+    const id = req.params.id;
+
+    userDb.getNameById(id).then(user => {
+        if (user.length >= 1) {
+            return res.status(200).json(user[0]);
+        }
+
+        return res.status(404).json({message: "The requested user does not exist."})
+    })
+    .catch(err => {
+        const error = {
+            message: `Internal Server Error`,
+            data: {
+                err: err
+            },
+        }
+        return res.status(500).json(error);
+    })
+})
+
+
 /**************************************************/
 
 // GET ALL USERS

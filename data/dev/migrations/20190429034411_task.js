@@ -4,10 +4,10 @@ exports.up = function(knex, Promise) {
         table.string('taskName', 128).notNullable();
         table.text('description');
         table.boolean('completed');
-        table.integer('completedBy');
+        table.integer('completedBy').references('id').inTable('users');
         table.date('completedOn');
         table.integer('groupID').references('id').inTable('groups').onDelete("CASCADE").notNullable();
-        table.string('comments');
+        table.string('comments').references('taskID').inTable('comments');
   
     })
   };
