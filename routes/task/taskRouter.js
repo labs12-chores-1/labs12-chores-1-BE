@@ -109,10 +109,10 @@ taskRouter.post('/', (req, res) => {
  * **/
 
 /**************************************************/
-taskRouter.get('/:id', (req, res) => {
+taskRouter.get('/group/:id', (req, res) => {
     const id = req.params.id;
 
-    taskDb.getById(id).then(task => {
+    taskDb.getByGroup(id).then(task => {
         if (task.length >= 1) {
             return res.status(200).json({data: task})
         }
@@ -131,13 +131,14 @@ taskRouter.get('/:id', (req, res) => {
 })
 /**************************************************/
 
-// GET ALL TASK
+// GET Task by ID
 /** @TODO This should be set to sysadmin privileges for subscription privacy **/
 
 /**************************************************/
 
-taskRouter.get('/', (req, res) => {
-    taskDb.get().then(task => {
+taskRouter.get('/:id', (req, res) => {
+    const id = req.params.id;
+    taskDb.getById(id).then(task => {
         if(task.length >= 1) {
             return res.status(200).json({data: task});
         }
