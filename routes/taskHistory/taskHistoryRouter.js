@@ -25,9 +25,9 @@ taskHistoryRouter.use(checkJwt);
  * **/
 taskHistoryRouter.post('/', (req, res) => {
     const taskHistory  = req.body;
-    //console.log('history', taskHistory)
-    if(!taskHistory.taskID ) return res.status(404).json({message: `taskID does not exist or is invalid.`});
-    if(!taskHistory.userID  ) return res.status(404).json({message: `userID does not exist or is invalid.`});
+    // return res.status(404).json({message: `task history type: ${typeof(taskHistory.taskID)}`});
+    if(!taskHistory.taskID || typeof(taskHistory.taskID) !== 'number' ) return res.status(404).json({message: `taskID does not exist or is invalid.`});
+    if(!taskHistory.userID || typeof(taskHistory.userID) !== 'number' ) return res.status(404).json({message: `userID does not exist or is invalid.`});
     //console.log("COR");
     taskHistoryDb.add(taskHistory).then(id => {
         //console.log(id, 'id');
@@ -278,12 +278,17 @@ taskHistoryRouter.delete('/remove/:id', (req, res) => {
 
 /**************************************************/
 
+<<<<<<< HEAD
 /** GET TASK HISTORIES IDs BY USER ID
+=======
+/** DELETE TASK HISTORY BY GROUP ID
+>>>>>>> master
  * @TODO Add middleware to prevent unauthorized deletions
  * **/
 
 /**************************************************/
 
+<<<<<<< HEAD
 taskHistoryRouter.get('/user/:id', (req, res) => {
     const userId = req.params.id;
     taskHistoryDb.returnUserGroups(userId).then(status => {
@@ -313,6 +318,47 @@ taskHistoryRouter.get('/all/group/:id', (req, res) => { //-----------------Doubl
         return res.status(500).json({error: `Internal server error.`})
     })
 })
+=======
+
+
+/**************************************************/
+
+/** GET TASK HISTORIES IDs BY USER ID
+ * @TODO Add middleware to prevent unauthorized deletions
+ * **/
+
+/**************************************************/
+
+// taskHistoryRouter.get('/user/:id', (req, res) => {
+//     const userId = req.params.id;
+//     taskHistoryDb.returnUserGroups(userId).then(status => {
+//         if (status >= 1) {
+//             return res.status(200).json({message: "Task History's group ID's successfully acquired.", id: Number(id)});
+//         }
+//         return res.status(400).json({message: "Failed to get task history."});
+//     })
+//         .catch(err => {
+//             const error = {
+//                 message: `Internal Server Error - Getting Task History Group ID's`,
+//                 data: {
+//                     err: err
+//                 },
+//             }
+//             return res.status(500).json(error);
+//         });
+// });
+
+// taskHistoryRouter.get('/all/group/:id', (req, res) => { //-----------------Double Check
+//     let groupID = req.params.id;
+
+//     taskHistoryDb.getByGroup(groupID).then(data => {
+//         return res.status(200).json({data})
+//     }).catch(err => {
+//         console.log(err);
+//         return res.status(500).json({error: `Internal server error.`})
+//     })
+// })
+>>>>>>> master
 
 
 module.exports = taskHistoryRouter;

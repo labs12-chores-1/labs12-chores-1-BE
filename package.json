@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+<<<<<<< HEAD
   "devDependencies": {},
   "engines": {
     "node":"v11.12.0",
     "yarn":"1.15.2"
+=======
+  "engines": {
+    "node": "v11.12.0",
+    "yarn": "1.15.2"
+>>>>>>> master
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
