@@ -154,6 +154,7 @@ function fetch_group_mem(id) {
 // get all groups with user ID
 // TODO: Refactor for better performance
 groupRouter.get('/user/:id', async (req, res) => {
+    // console.log("inside /group/user/:id");
     let userID = req.params.id;
     var finalProfiles = [];
 
