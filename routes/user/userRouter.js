@@ -229,7 +229,6 @@ userRouter.delete('/:id', checkUser, (req, res) => {
 /**************************************************/
 userRouter.get('/check/getid', (req, res) => {
     let email = req.user.email;
-    debugger;
     userDb.getIdByEmail(email).then(id => {
         if(!id || id.length === 0){
             //create new user
