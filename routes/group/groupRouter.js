@@ -46,6 +46,7 @@ groupRouter.post('/', checkSubscription, (req, res) => {
     let group = req.body;
     const subType = req.subscriptionType;
     console.log("GROUP => ", group);
+    return res.status(400).json({"subType => ": subType});
     console.log("subType => ", subType);
 
     groupDb.getByUser(group.userID).then(rs => {

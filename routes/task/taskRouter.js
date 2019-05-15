@@ -155,6 +155,34 @@ taskRouter.get('/:id', (req, res) => {
             return res.status(500).json(error);
         })
 })
+
+/**************************************************/
+
+// GET Task by search input
+/** @TODO This should be set to sysadmin privileges for subscription privacy **/
+
+/**************************************************/
+
+taskRouter.get('/:input', (req, res) => {
+    const input = req.params.input;
+    taskDb.getById(id).then(task => {
+        if(task.length >= 1) {
+            return res.status(200).json({data: task});
+        }
+
+        return res.status(404).json({message: `The requested tasks do not exist.`})
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Getting Tasks`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        })
+})
+
 /**************************************************/
 
 // GET ALL TASKS
