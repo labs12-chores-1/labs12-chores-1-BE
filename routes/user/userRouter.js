@@ -228,7 +228,7 @@ userRouter.delete('/:id', checkUser, (req, res) => {
 
 /**************************************************/
 userRouter.get('/check/getid', (req, res) => {
-    console.log("in /user/check/getid");
+    // console.log("in /user/check/getid");
     let email = req.user.email;
     // console.log(email);
     userDb.getIdByEmail(email).then(id => {

@@ -5,8 +5,8 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('task').insert([
-        {id: 1, taskName: 'Clean bathroom', groupID:1},
-        {id: 2, taskName: 'Clearn kitchen', groupID:1}
+        {id: 1, taskName: 'Clean bathroom', groupID:1, completedBy: 1},
+        {id: 2, taskName: 'Clearn kitchen', groupID:1, completedBy: 2}
       ]);
     });
 };

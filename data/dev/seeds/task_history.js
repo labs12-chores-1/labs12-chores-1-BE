@@ -5,7 +5,8 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       // Inserts seed entries
       return knex('taskHistory').insert([
-        {id: 1, userID:1, taskID:1, groupID:1}
+        {id: 1, userID:1, taskID:1, groupID:1},
+        {id: 2, userID:2, taskID:2, groupID:1},
       ]);
     });
 };

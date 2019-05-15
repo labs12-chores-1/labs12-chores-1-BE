@@ -5,8 +5,7 @@
   "main": "index.js",
   "devDependencies": {},
   "engines": {
-    "node":"v11.12.0",
-    "yarn":"1.15.2"
+    "yarn": "1.15.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
