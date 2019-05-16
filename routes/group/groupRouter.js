@@ -7,6 +7,7 @@ const groupMemDb = require('../../helpers/groupMembersModel');
 const usersDb = require('../../helpers/userModel');
 const nodemailer = require('nodemailer');
 
+
 const checkJwt = require('../../validators/checkJwt');
 // checkJwt middleware authenticates user tokens and ensures they are signed correctly in order to access our internal API
 const checkUser = require('../../validators/checkUser');
@@ -45,6 +46,7 @@ groupRouter.post('/', checkSubscription, (req, res) => {
     let group = req.body;
     const subType = req.subscriptionType;
     console.log("GROUP => ", group);
+    // return res.status(400).json({"subType => ": subType});
     console.log("subType => ", subType);
 
     groupDb.getByUser(group.userID).then(rs => {
@@ -153,6 +155,7 @@ function fetch_group_mem(id) {
 // get all groups with user ID
 // TODO: Refactor for better performance
 groupRouter.get('/user/:id', async (req, res) => {
+    // console.log("inside /group/user/:id");
     let userID = req.params.id;
     var finalProfiles = [];
 
