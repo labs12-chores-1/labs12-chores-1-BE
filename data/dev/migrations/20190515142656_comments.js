@@ -1,4 +1,3 @@
-
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('comments', (table) => {
         // initialize comments table db rows

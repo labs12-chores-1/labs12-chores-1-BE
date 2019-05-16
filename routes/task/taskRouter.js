@@ -104,7 +104,7 @@ taskRouter.post('/', (req, res) => {
 })  
 /**************************************************/
 
-/** GET TASK BY GROUP ID
+/** GET TASKS BY GROUP ID
  * @TODO Add middleware to ensure user is logged in
  * **/
 
@@ -117,7 +117,7 @@ taskRouter.get('/group/:id', (req, res) => {
             return res.status(200).json({data: task})
         }
 
-        return res.status(404).json({message: "The requested task does not exist."});
+        return res.status(404).json({message: "The requested tasks does not exist."});
     })
         .catch(err => {
             const error = {
@@ -147,6 +147,33 @@ taskRouter.get('/:id', (req, res) => {
     })
         .catch(err => {
             const error = {
+                message: `Internal Server Error - Getting Task`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        })
+})
+
+/**************************************************/
+
+// GET Task by search input
+/** @TODO This should be set to sysadmin privileges for subscription privacy **/
+
+/**************************************************/
+
+taskRouter.get('/:input', (req, res) => {
+    const input = req.params.input;
+    taskDb.getById(id).then(task => {
+        if(task.length >= 1) {
+            return res.status(200).json({data: task});
+        }
+
+        return res.status(404).json({message: `The requested tasks do not exist.`})
+    })
+        .catch(err => {
+            const error = {
                 message: `Internal Server Error - Getting Tasks`,
                 data: {
                     err: err
@@ -155,6 +182,7 @@ taskRouter.get('/:id', (req, res) => {
             return res.status(500).json(error);
         })
 })
+
 /**************************************************/
 
 // GET ALL TASKS
