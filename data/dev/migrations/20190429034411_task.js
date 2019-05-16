@@ -8,8 +8,8 @@ exports.up = function(knex, Promise) {
         table.integer('completedBy').references('id').inTable('users');
         table.date('completedOn');
         table.integer('groupID').references('id').inTable('groups').onDelete("CASCADE").notNullable();
-        
-  
+        table.string('assigneeName').references('name').inTable('users');
+        table.string('createdBy').references('name').inTable('users');
     })
   };
   

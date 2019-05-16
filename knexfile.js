@@ -32,7 +32,8 @@ module.exports = {
     },
     seeds: {
       directory: './data/dev/seeds'
-    }
+    },
+    ssl: true
   },
 
   staging: {

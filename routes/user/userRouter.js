@@ -86,7 +86,7 @@ userRouter.get('/:id', (req, res) => {
 userRouter.get('/:id/name', (req, res) => {
     const id = req.params.id;
 
-    userDb.getNameById(id).then(user => {
+    userDb.getNameByID(id).then(user => {
         if (user.length >= 1) {
             return res.status(200).json(user[0]);
         }
@@ -228,8 +228,9 @@ userRouter.delete('/:id', checkUser, (req, res) => {
 
 /**************************************************/
 userRouter.get('/check/getid', (req, res) => {
+    // console.log("in /user/check/getid");
     let email = req.user.email;
-    
+    // console.log(email);
     userDb.getIdByEmail(email).then(id => {
         if(!id || id.length === 0){
             //create new user
@@ -273,6 +274,7 @@ userRouter.get('/check/getid', (req, res) => {
             })
         } else {
             return userDb.getById(id[0].id).then(profile => {
+                // console.log("inside getByID");
                 return res.status(200).json({profile: profile[0], id: id[0].id});
             }).catch(err => {
                 console.log(err);
