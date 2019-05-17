@@ -4,8 +4,7 @@ exports.up = function(knex, Promise) {
         table.string('taskName', 128).notNullable();
         table.text('taskDescription');
         table.boolean('completed').defaultTo(false);
-        table.boolean('recurring').defaultTo(false);
-        table.integer('completedBy').references('id').inTable('users');
+        table.integer('completedBy');
         table.date('completedOn');
         table.integer('groupID').references('id').inTable('groups').onDelete("CASCADE").notNullable();
         table.string('assigneeName');
@@ -15,4 +14,8 @@ exports.up = function(knex, Promise) {
   
   exports.down = function(knex, Promise) {
     return knex.schema.dropTableIfExists('task');
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6eeb3f1912f1c69159ced836d8e1ab3fb94d6f1a
   };
