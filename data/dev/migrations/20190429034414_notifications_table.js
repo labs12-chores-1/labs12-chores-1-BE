@@ -11,7 +11,6 @@ exports.up = function(knex, Promise) {
         table.timestamp('createdAt').defaultTo(knex.fn.now());
         table.timestamp('updatedAt').defaultTo(knex.fn.now());
         table.integer("taskID").references('id').inTable('task').onDelete("CASCADE");
-        table.integer("commentID").references('id').inTable('comments').onDelete("CASCADE");
     });
 
 };

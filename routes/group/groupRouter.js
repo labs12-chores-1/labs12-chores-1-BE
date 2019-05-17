@@ -54,7 +54,7 @@ groupRouter.post('/', checkSubscription, (req, res) => {
         if (subType === 1 && rs.length >= 1) {
             return res.status(403).json({ warning: `You do not have permission to do that. Only premium members can create more than one group.`})
         } else if (subType === 1 && rs.length === 0 || subType === 2) {
-            groupDb.add(group).then(groupId => {
+            return groupDb.add(group).then(groupId => {
                 // console.log(groupId);
                 const member = {
                     userID: group.userID,
@@ -63,7 +63,7 @@ groupRouter.post('/', checkSubscription, (req, res) => {
                 };
 
                 if (groupId.length >= 1) {
-                    groupMembersDb.add(member).then(mId => {
+                    return groupMembersDb.add(member).then(mId => {
                         const msg = {
                             message: `Group ${groupId} successfully added.`,
                             group: {
