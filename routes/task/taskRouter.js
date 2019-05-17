@@ -56,11 +56,11 @@ taskRouter.post('/', (req, res) => {
         // we can assume the user in req.user is performing this action via checkJwt
         let notification = {};
         // can we abstract this into a function?
-        userDb.getProfileByEmail(req.user.email).then(user => {
+        return userDb.getProfileByEmail(req.user.email).then(user => {
             notification.userID = user[0].id;
             notification.userName = user[0].name;
 
-            groupDb.getById(groupID).then(group => {
+            return groupDb.getById(groupID).then(group => {
                 notification.groupID = group[0].id;
                 notification.groupName = group[0].name;
                 notification.action = 'add-task';
@@ -91,7 +91,7 @@ taskRouter.post('/', (req, res) => {
 
                 console.log('NOTIFICATION\n\n', notification);
 
-                notificationDb.add(notification).then(response => {
+                return notificationDb.add(notification).then(response => {
                     console.log('notification added', response);
                     return res.status(200).json({message: `Task successfully added`, id: id[0]});
                 })
