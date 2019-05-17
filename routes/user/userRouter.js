@@ -107,7 +107,7 @@ userRouter.get('/:id/name', (req, res) => {
 
 /**************************************************/
 
-// GET ALL USERS
+// GET USER BY EMAIL
 /** @TODO This should be set to sysadmin privileges for user privacy **/
 
 /**************************************************/
