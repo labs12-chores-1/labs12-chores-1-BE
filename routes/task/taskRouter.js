@@ -224,7 +224,7 @@ taskRouter.put('/:id', (req, res) => {
     taskDb.getById(id).then(task => {
         let oldtask = task[0];// oldtask???
 
-        taskDb.update(id, changes).then(status => {
+        return taskDb.update(id, changes).then(status => {
             console.log('task update', status);
 
             if (status.length >= 1 || status === 1) {
