@@ -353,7 +353,7 @@ commentRouter.delete('/:id', (req, res) => {
     commentDb.getById(id).then(comment => {
         let groupID = comment[0].groupID;
         let oldComment = comment[0];
-        commentDb.remove(id).then(status => {
+        return commentDb.remove(id).then(status => {
             // console.log('remove status', status)
             if (status.length >= 1 || status === 1) {
                 return res.status(200).json({message: "Comment removed successfully", id: status[0]});
