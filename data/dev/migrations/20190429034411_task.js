@@ -4,8 +4,7 @@ exports.up = function(knex, Promise) {
         table.string('taskName', 128).notNullable();
         table.text('taskDescription');
         table.boolean('completed').defaultTo(false);
-        table.boolean('recurring').defaultTo(false);
-        table.integer('completedBy').references('id').inTable('users');
+        table.integer('completedBy');
         table.date('completedOn');
         table.integer('groupID').references('id').inTable('groups').onDelete("CASCADE").notNullable();
         table.string('assigneeName');
