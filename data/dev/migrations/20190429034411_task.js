@@ -14,4 +14,8 @@ exports.up = function(knex, Promise) {
   
   exports.down = function(knex, Promise) {
     return knex.schema.dropTableIfExists('task');
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6eeb3f1912f1c69159ced836d8e1ab3fb94d6f1a
   };
