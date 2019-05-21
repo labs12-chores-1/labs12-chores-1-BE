@@ -9,6 +9,7 @@ exports.up = function(knex, Promise) {
         table.integer('groupID').references('id').inTable('groups').onDelete("CASCADE").notNullable();
         table.string('assigneeName');
         table.string('createdBy');
+        table.string('recurringTime');
     })
   };
   
