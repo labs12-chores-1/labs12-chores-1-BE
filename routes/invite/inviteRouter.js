@@ -48,7 +48,7 @@ inviteRouter.post('/create', checkJwt, checkSubscription, (req, res) => {
         if (subType === 1 && rs.length >= 2) {
             return res.status(403).json({ warning: `You do not have permission to do that. Only premium members can add more than two members.`})
         } else if (subType === 1 && rs.length < 2 || subType === 2 && rs.length < 6) {
-            inviteDb.add(info).then(status => {
+            return inviteDb.add(info).then(status => {
                 console.log('status', status)
                 if(status.length >= 0){
                     console.log('success!');
