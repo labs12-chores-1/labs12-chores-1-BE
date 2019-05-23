@@ -155,7 +155,7 @@ function fetch_group_mem(id) {
 // get all groups with user ID
 // TODO: Refactor for better performance
 groupRouter.get('/user/:id', async (req, res) => {
-    // console.log("inside /group/user/:id");
+    // console.log("req.params.id:", req.params.id);
     let userID = req.params.id;
     var finalProfiles = [];
 
@@ -178,13 +178,14 @@ groupRouter.get('/user/:id', async (req, res) => {
                     if(!groupProfiles[j].members){
                         groupProfiles[j].members = [];
                     }
-                    
+                    // console.log(groupProfiles[j]);
                     // get all members of each group via groupmembers
                     return groupMembersDb.getByGroup(groupProfiles[j].id).then(groupMembers => {    
-                        // console.log('group members', groupMembers);
+                        console.log('group members', groupMembers);
 
                         // get all user profiles via userdb
                         for(let k = 0; k < groupMembers.length; k++){
+                            // console.log("groupMembers[k].userID:", usersDb.getById(groupMembers[k].userID));
                             return usersDb.getById(groupMembers[k].userID).then(userProfile => {
                                 // console.log('userProfile', userProfile[0]);
                                 if(userProfile && userProfile[0] !== undefined){
@@ -193,12 +194,12 @@ groupRouter.get('/user/:id', async (req, res) => {
                                     let removed = {id: 0, name: 'Removed User', email: 'removed', profilePicture: 'https://i.imgur.com/M8kRKQC.png'};
                                     groupProfiles[j].members[k] = removed;
                                 }
-                                // console.log('finished profile', groupProfiles[j]);
+                                console.log('finished profile', groupProfiles[j]);
                                 if(k === groupMembers.length - 1){
                                     finalProfiles.push(groupProfiles[j]);
 
                                     if(i === joinedGroups.length - 1 && joinedGroups.length > 1){
-                                        console.log('final profiles', finalProfiles);
+                                        // console.log('final profiles', finalProfiles);
                                         return res.status(200).json({groups: finalProfiles});
                                     } else if (joinedGroups.length === 1 && i === 0){
                                         // handle users with only a single group
@@ -213,7 +214,7 @@ groupRouter.get('/user/:id', async (req, res) => {
             })
         }
     }).catch(err => {
-        console.log(err);
+        console.log("error!!!!");
         return res.status(500).json({error: `Internal server error.`})
     })
 })
