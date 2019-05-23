@@ -21,6 +21,21 @@ const dbConnection = process.env.DATABASE_URL || localPg;
 module.exports = {
 
   development: {
+    // client: 'pg',
+    // connection: dbConnection,
+    // pool: {
+    //   min: 2,
+    //   max: 10
+    // },
+    // migrations: {
+    //   tableName: 'knex_migrations',
+    //   directory: './data/dev/migrations',
+    // },
+    // seeds: {
+    //   directory: './data/dev/seeds'
+    // },
+    // ssl: true,
+    //==================
     client: 'sqlite3',
     connection: {
       filename: './data/fairshare.sqlite3'
