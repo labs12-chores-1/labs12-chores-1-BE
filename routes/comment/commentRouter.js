@@ -58,61 +58,61 @@ commentRouter.use(checkJwt);
          *      
          */
 commentRouter.post('/', (req, res) => {
-    const comment = req.body;
+    const comment = req.params;
     let groupID = comment.groupID;
     let commentedBy = comment.commentedBy;
 
     commentDb.add(comment).then(id => {
         // console.log(`Comment ID: ${id} is successfully added to the comment DB!`);
-        return res.status(200).json({message: "Comment added.", id: id});
+        // return res.status(200).json({message: "Comment added.", id: id});
     
         //Remove ShopTrak codes for notifications, for now
     //************************************************************************
         // get group and user information for notification
         // we can assume the user in req.user is performing this action via checkJwt
-        // let notification = {};
-        // // can we abstract this into a function?
-        // userDb.getProfileByEmail(req.user.email).then(user => {
-        //     notification.commentedBy = user[0].id;
-        //     notification.userName = user[0].name;
+        let notification = {};
+        // can we abstract this into a function?
+        userDb.getProfileByEmail(req.user.email).then(user => {
+            notification.commentedBy = user[0].id;
+            notification.userName = user[0].name;
 
-        //     groupDb.getById(groupID).then(group => {
-        //         notification.groupID = group[0].id;
-        //         notification.groupName = group[0].name;
-        //         notification.action = 'add-comment';
-        //         notification.content = `${notification.userName} added ${comment.name} to the ${notification.groupName} task list.`
+            groupDb.getById(groupID).then(group => {
+                notification.groupID = group[0].id;
+                notification.groupName = group[0].name;
+                notification.action = 'add-comment';
+                notification.content = `${notification.userName} added ${comment.name} to the ${notification.groupName} task list.`
 
-        //         pusher.trigger(`group-${groupID}`, 'add-comment', {
-        //             "message": `${notification.userName} added ${comment.name} to the ${notification.groupName} task list.`,
-        //             "timestamp": moment().format()
-        //         })
+                pusher.trigger(`group-${groupID}`, 'add-comment', {
+                    "message": `${notification.userName} added ${comment.name} to the ${notification.groupName} task list.`,
+                    "timestamp": moment().format()
+                })
 
-        //         beamsClient.publishToInterests([`group-${groupID}`], {
-        //             apns: {
-        //                 aps: {
-        //                     alert: notification.content
-        //                 }
-        //             },
-        //             fcm: {
-        //                 notification: {
-        //                     title: `New Comment Added`,
-        //                     body: notification.content
-        //                 }
-        //             }
-        //         }).then((publishResponse) => {
-        //             console.log('comment notification', publishResponse.publishId);
-        //         }).catch((error) => {
-        //             console.log('error', error);
-        //         })
+                beamsClient.publishToInterests([`group-${groupID}`], {
+                    apns: {
+                        aps: {
+                            alert: notification.content
+                        }
+                    },
+                    fcm: {
+                        notification: {
+                            title: `New Comment Added`,
+                            body: notification.content
+                        }
+                    }
+                }).then((publishResponse) => {
+                    console.log('comment notification', publishResponse.publishId);
+                }).catch((error) => {
+                    console.log('error', error);
+                })
 
-        //         console.log('NOTIFICATION\n\n', notification);
+                console.log('NOTIFICATION\n\n', notification);
 
-        //         notificationDb.add(notification).then(response => {
-        //             console.log('notification added', response);
-        //             return res.status(200).json({message: `Comment successfully added`, id: id[0]});
-        //         })
-        //     })
-        // })     
+                notificationDb.add(notification).then(response => {
+                    console.log('notification added', response);
+                    return res.status(200).json({message: `Comment successfully added`, id: id[0]});
+                })
+            })
+        })     
         //*******************************************************************   
     }).catch(err => {
         console.log(err);
