@@ -1,6 +1,7 @@
 const express = require('express');
 const groupMemberRouter = express.Router();
 const groupMemDb = require('../../helpers/groupMembersModel');
+const userDb = require('../../helpers/userModel');
 
 const checkJwt = require('../../validators/checkJwt');
 const checkUser = require('../../validators/checkUser');
@@ -59,9 +60,11 @@ groupMemberRouter.post('/', (req, res) => {
  * **/
 
 /**************************************************/
-groupMemberRouter.get('/group/:id', checkUser, (req, res) => {
+groupMemberRouter.get('/group/:id', //checkUser,
+                     (req, res) => {
     const id = req.params.id;
-
+    // return res.status(200).json({worked: "worked"})
+    console.log("Tsai")
     groupMemDb.getByGroup(id).then(mem => {
         if (mem.length >= 1) {
             return res.status(200).json(mem);
@@ -152,7 +155,7 @@ groupMemberRouter.get('/', (req, res) => {
     groupMemDb.get().then(mems => {
         if(mems){
             return res.status(200).json({data: mems});
-            return res.status(404).json({error: `No groups exist.`});
+            // return res.status(404).json({error: `No groups exist.`});
         }
 
         return res.status(404).json({error: `No groups exist.`});
@@ -248,5 +251,50 @@ groupMemberRouter.get('/groups/user/:id', (req, res) => {
             return res.status(500).json(error);
         })
 })
+
+/**************************************************/
+
+/** GET GROUP MEMBER NAMES BY GROUP ID
+ * @TODO Add middleware to ensure user is logged in
+ * **/
+
+/**************************************************/
+groupMemberRouter.get('/group/:id/name', //checkUser, 
+                    (req, res) => {
+    const id = req.params.id;
+
+    groupMemDb.getByGroup(id).then(mem => {
+        if (mem.length >= 1) {
+            // return res.status(200).json(mem);
+            let groupUserNames = [];
+            mem.forEach(function(member) {                
+                // console.log("member: ", member);
+                // groupUserNames.push()
+                    return userDb.getNameByID((member.userID)).then(memberName=>{
+                        console.log("member name:", memberName);
+                        groupUserNames.push(memberName[0].name);
+                        return
+                        // return res.status(200).json({data:memberName[0].name});
+                        // console.log("groupUserNames: ", groupUserNames);
+                    })
+                // .catch(err=>{const error = {message: "this is messed up!"}})
+                // console.log("groupUserNames: ", groupUserNames);
+            })
+            console.log("before return: groupUserNames: ", groupUserNames);
+            return res.status(200).json({data:groupUserNames});
+        }
+        return res.status(404).json({message: "The requested group members do not exist."});
+    })
+        .catch(err => {
+            const error = {
+                message: `Internal Server Error - Getting Group Member`,
+                data: {
+                    err: err
+                },
+            }
+            return res.status(500).json(error);
+        })
+})
+
 
 module.exports = groupMemberRouter;
