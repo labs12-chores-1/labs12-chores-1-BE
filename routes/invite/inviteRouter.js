@@ -104,7 +104,7 @@ inviteRouter.get('/:code', (req, res) => {
 // if invitation is accepted, add new user to groupMembers db
 
 inviteRouter.post('/join', checkJwt, (req, res) => { // req.body must contain the invitation code
-    console.log(req.user);
+    console.log("Req.User:",req.user);
 
     var newID;
 
