@@ -33,6 +33,19 @@ function getByGroup(id) {
 }
 
 /**
+ * Returns all the group member names of the given group ID
+ * @param id - The ID of the group
+ * @returns {*} - Returns all information about the group member from the given ID
+ */
+function getByGroup(id) {
+  return db("groupMembers")
+    .join("users", "users.id", "groupMembers.userID")
+    .select("users.name")
+    .from("groupMembers")
+    .where("groupID", id);
+}
+
+/**
  * Return all the information owned by the given user ID
  * @param id - The ID of the user
  * @returns {*} - Returns every information owned by given user ID

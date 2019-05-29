@@ -25,7 +25,7 @@ const checkUser = (req, res, next) => {
                 return res.status(403).json({warning: `You do not have permission to do that.`})
             }
         } else {
-            // console.log('id', id);
+            // console.log('id[0].id: ', id[0].id);
             return routeCheck(req, res, next, id[0].id); // if a valid user ID is found, pass it to the routeChecker
         }
     }).catch(err => {
@@ -45,8 +45,9 @@ async function routeCheck(req, res, next, userId){
     // console.log(req);
     // console.log('req.url', req.url);
     // console.log('baseUrl', req.baseUrl);
-    console.log('originalUrl', req.originalUrl);
-    console.log('req method', req.method);
+    // console.log('originalUrl', req.originalUrl);
+    // console.log('req method', req.method);
+    // console.log("userId: ", userId);
     // console.log('_parsedUrl', req._parsedUrl)
     // console.log('req params', req.params)
 
@@ -126,23 +127,27 @@ async function routeCheck(req, res, next, userId){
       * ensures only members of a group can see group members
       */
 
-      if(req.originalUrl === `/api/groupmember/group/${req.params.id}`){
+      if(req.originalUrl === `/api/groupMember/group/${req.params.id} ` || req.originalUrl === `/api/groupMember/group/${req.params.id}/name`){
           let paramId = Number(req.params.id);
 
           groupMembersDb.getByGroup(paramId).then(members => {
+              console.log("members: ", members);
               let member = members.filter(m => {
                   if(m.userID === userId){
+                      console.log(m)
                       return m;
                   }
               })
 
               // console.log(member);
               if(member.length === 0 || !member){
+                //   console.log("inside checkUser");
                   return res.status(403).json({warning: `You do not have permission to do that.`})
               } else {
-                  return next();
-              }
-          }).catch(err => {
+                //   let nextFunction = await next();
+                  next();
+                  return res.status(200).json({message: `User confirmed`})
+          }}).catch(err => {
               console.log(err);
               return res.status(500).json({error: `Internal server error.`})
           })
