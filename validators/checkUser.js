@@ -127,7 +127,7 @@ async function routeCheck(req, res, next, userId){
       * ensures only members of a group can see group members
       */
 
-      if(req.originalUrl === `/api/groupMember/group/${req.params.id} ` || req.originalUrl === `/api/groupMember/group/${req.params.id}/name`){
+      if(req.originalUrl === `/api/groupmember/group/${req.params.id} ` || req.originalUrl === `/api/groupmember/group/${req.params.id}/name`){
           let paramId = Number(req.params.id);
 
           groupMembersDb.getByGroup(paramId).then(members => {

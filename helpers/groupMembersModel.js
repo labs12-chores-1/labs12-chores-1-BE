@@ -12,6 +12,7 @@ module.exports = {
   update,
   remove,
   removeGroup,
+  getNamesByGroup
 }
 /**
  * Returns all the group members in the database
@@ -37,7 +38,7 @@ function getByGroup(id) {
  * @param id - The ID of the group
  * @returns {*} - Returns all information about the group member from the given ID
  */
-function getByGroup(id) {
+function getNamesByGroup(id) {
   return db("groupMembers")
     .join("users", "users.id", "groupMembers.userID")
     .select("users.name")

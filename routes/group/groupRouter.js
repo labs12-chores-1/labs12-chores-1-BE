@@ -181,12 +181,14 @@ groupRouter.get('/user/:id', async (req, res) => {
                     // console.log(groupProfiles[j]);
                     // get all members of each group via groupmembers
                     return groupMembersDb.getByGroup(groupProfiles[j].id).then(groupMembers => {    
-                        console.log('group members', groupMembers);
+                        // console.log('HERE!! group members', groupMembers);
 
                         // get all user profiles via userdb
                         for(let k = 0; k < groupMembers.length; k++){
-                            // console.log("groupMembers[k].userID:", usersDb.getById(groupMembers[k].userID));
+                            console.log("groupMembers[k].userID:", //usersDb.getById(
+                                groupMembers[k]);
                             return usersDb.getById(groupMembers[k].userID).then(userProfile => {
+                                console.log("Tsai");
                                 // console.log('userProfile', userProfile[0]);
                                 if(userProfile && userProfile[0] !== undefined){
                                     groupProfiles[j].members[k] = userProfile[0];
@@ -207,6 +209,9 @@ groupRouter.get('/user/:id', async (req, res) => {
                                     }
                                 }
                                 
+                            }).catch(err=>{
+                                console.log("error here!");
+                                return res.status(501).json({error: "WTH"})
                             })
                         }
                     })
