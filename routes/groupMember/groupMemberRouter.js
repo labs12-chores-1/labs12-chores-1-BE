@@ -263,14 +263,14 @@ groupMemberRouter.get('/group/:id/name', //checkUser,
                     (req, res) => {
     const id = req.params.id;
 
-    groupMemDb.getNamesByGroup(id).then(mem => {
+    groupMemDb.getUserObjsByGroup(id).then(mem => {
         if (mem.length >= 1) {
-            let groupUserNames = [];
+            let groupUserObjs = [];
             for (let i=0; i<mem.length;i++){
-                groupUserNames.push(mem[i].name);            
+                groupUserObjs.push(mem[i]);            
             }
-            // console.log("before return: groupUserNames: ", groupUserNames);
-            return res.status(200).json({data:groupUserNames});
+            // console.log("before return: groupUserObjs: ", groupUserObjs);
+            return res.status(200).json({data:groupUserObjs});
         }
         return res.status(404).json({message: "The requested group members do not exist."});
     })
