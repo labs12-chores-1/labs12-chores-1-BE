@@ -6,7 +6,7 @@ const server = require('./api/server.js');
 
 // loads .env files for development mode
 if(process.env.NODE_ENV !== 'production'){
-    require('dotenv').load();
+    require('dotenv');
 }
 
 const port = process.env.PORT || 9000;
